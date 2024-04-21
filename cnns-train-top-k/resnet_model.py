@@ -114,7 +114,7 @@ class ResNet(nn.Module):
         sparse_x_reshape = x_reshape * top_k_mask
 
         # Replace the top-k values with the mean of the top-k values
-        if self.topk_operation == "mean_replacement":
+        if self.topk_operation == "top_k_mean_replace":
             means_topk = sparse_x_reshape.sum(dim=2) / num_kept_neurons
             non_zero_mask = sparse_x_reshape != 0
             means_expanded = means_topk.unsqueeze(2).expand_as(sparse_x_reshape)
