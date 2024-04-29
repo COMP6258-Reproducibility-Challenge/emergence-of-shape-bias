@@ -20,11 +20,14 @@ if __name__ == "__main__":
         help="The path to the dataset. (default: data)",
     )
     parser.add_argument(
-        "--batch_size", type=int, default=32, help="The batch size. (default: 32)"
+        "--model_spec",
+        type=str,
+        default="CS",
+        help="The model specification. CS for Code-Spec and PS for Paper-Spec. For more details, refer to the report. (default: CS)",
+        choices=["CS", "PS"],
     )
-    parser.add_argument(
-        "--epochs", type=int, default=50, help="The number of epochs. (default: 50)"
-    )
+    parser.add_argument("--batch_size", type=int, default=32, help="The batch size. (default: 32)")
+    parser.add_argument("--epochs", type=int, default=50, help="The number of epochs. (default: 50)")
     parser.add_argument(
         "--topk_operation",
         type=str,
@@ -52,11 +55,14 @@ if __name__ == "__main__":
     )
 
     # The ResNet model
-    resnet = ResNet(topk_operation=top_k, device=device)
+    resnet = ResNet(model_spec=args.model_spec, topk_operation=top_k, device=device)
 
     # The loss function, optimiser, and scheduler
     criterion = torch.nn.CrossEntropyLoss()
-    optimiser = optim.SGD(resnet.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
+    if args.model_spec == "CS":
+        optimiser = optim.SGD(resnet.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
+    else:
+        optimiser = optim.SGD(resnet.parameters(), lr=0.1)
     scheduler = CosineAnnealingLR(T_max=args.epochs)
 
     # The trial
@@ -67,9 +73,7 @@ if __name__ == "__main__":
         metrics=["loss", "accuracy"],
         callbacks=[scheduler],
     ).to(device)
-    trial.with_generators(trainloader, test_generator=testloader).run(
-        epochs=args.epochs
-    )
+    trial.with_generators(trainloader, test_generator=testloader).run(epochs=args.epochs)
     trial.run(epochs=args.epochs)
 
     # Evaluate the model on the test dataset
