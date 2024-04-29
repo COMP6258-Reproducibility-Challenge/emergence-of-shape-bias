@@ -1,0 +1,6 @@
+[core]
+    remote = remote_dvc
+['remote "mygdrive"']
+    url = gdrive://your_folder_id
+['remote "remote_dvc"']
+    url = gdrive://1aFCz35Tz0l1F22Uo3CZdz2zsFFYyXvLJ

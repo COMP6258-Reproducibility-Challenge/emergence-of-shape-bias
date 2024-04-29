@@ -1,0 +1,5 @@
+outs:
+- md5: 86e401c574992892b13327f274ab10c7
+  size: 2380120576
+  hash: md5
+  path: imagenet_subsets.zip
