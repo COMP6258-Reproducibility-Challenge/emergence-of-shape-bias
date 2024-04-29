@@ -51,25 +51,15 @@ def get_data_loaders(dataset_path, batch_size=32):
     )
 
     # The trainset
-    trainset = torchvision.datasets.ImageFolder(
-        root="{}/train".format(dataset_path), transform=transform_train
-    )
-    trainloader = torch.utils.data.DataLoader(
-        trainset, batch_size=batch_size, shuffle=True
-    )
+    trainset = torchvision.datasets.ImageFolder(root="{}/train".format(dataset_path), transform=transform_train)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
     # The testset
-    testset = torchvision.datasets.ImageFolder(
-        root="{}/test".format(dataset_path), transform=transform_test
-    )
-    testloader = torch.utils.data.DataLoader(
-        testset, batch_size=batch_size, shuffle=False
-    )
+    testset = torchvision.datasets.ImageFolder(root="{}/test".format(dataset_path), transform=transform_test)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
     # The stylisedtestset
     stylised_testset = torchvision.datasets.ImageFolder(
         root="{}/stylised_test".format(dataset_path), transform=transform_test
     )
-    stylised_testloader = torch.utils.data.DataLoader(
-        stylised_testset, batch_size=batch_size, shuffle=False
-    )
+    stylised_testloader = torch.utils.data.DataLoader(stylised_testset, batch_size=batch_size, shuffle=False)
 
     return trainloader, testloader, stylised_testloader

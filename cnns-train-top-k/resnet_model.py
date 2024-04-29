@@ -67,6 +67,7 @@ class ResNet(nn.Module):
         basic_block (nn.Module): The basic block used in the ResNet architecture.
         num_blocks (list): The number of blocks in each layer of the ResNet architecture.
         num_classes (int): The number of classes in the dataset.
+        model_spec (str): The model specification. CS for Code-Spec and PS for Paper-Spec.
         topk_operation (str): The top-k operation to apply to the model.
         device (str): The device to use for the model.
     """
@@ -76,14 +77,15 @@ class ResNet(nn.Module):
         basic_block=BasicBlock,
         num_blocks=[2, 2, 2, 2],
         num_classes=10,
+        model_spec="CS",
         topk_operation=None,
         device="cuda",
     ):
         super(ResNet, self).__init__()
+        self.model_spec = model_spec
+
         self.in_channels = 64
-        self.conv1 = nn.Conv2d(
-            3, self.in_channels, kernel_size=3, stride=2, padding=1, bias=False
-        )
+        self.conv1 = nn.Conv2d(3, self.in_channels, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(self.in_channels)
         self.relu = nn.ReLU(inplace=True)
 
@@ -93,7 +95,11 @@ class ResNet(nn.Module):
         self.block3 = self._make_layer(basic_block, 256, num_blocks[2], stride=2)
         self.block4 = self._make_layer(basic_block, 512, num_blocks[3], stride=2)
 
-        self.fc = nn.Linear(512 * 7 * 7, num_classes)
+        if model_spec == "CS":
+            self.fc = nn.Linear(512 * 7 * 7, num_classes)
+        else:
+            self.fc = nn.Linear(512, num_classes)
+
         self.device = device
         self.topk_operation = topk_operation
 
@@ -118,9 +124,7 @@ class ResNet(nn.Module):
             means_topk = sparse_x_reshape.sum(dim=2) / num_kept_neurons
             non_zero_mask = sparse_x_reshape != 0
             means_expanded = means_topk.unsqueeze(2).expand_as(sparse_x_reshape)
-            sparse_x_reshape = torch.where(
-                non_zero_mask, means_expanded, sparse_x_reshape
-            ).to(self.device)
+            sparse_x_reshape = torch.where(non_zero_mask, means_expanded, sparse_x_reshape).to(self.device)
 
         sparse_x = sparse_x_reshape.view(n, c, h, w)
         return sparse_x
@@ -168,7 +172,12 @@ class ResNet(nn.Module):
 
         output = self.block3(output)
         output = self.block4(output)
-        output = F.avg_pool2d(output, 2)
+
+        if self.model_spec == "CS":
+            output = F.avg_pool2d(output, 2)
+        else:
+            output = F.adaptive_avg_pool2d(output, (1, 1))
+
         output = output.view(output.size(0), -1)
         output = self.fc(output)
 
