@@ -1,0 +1,2 @@
+torchbearer==0.5.5
+dvc-gdrive==3.0.1
