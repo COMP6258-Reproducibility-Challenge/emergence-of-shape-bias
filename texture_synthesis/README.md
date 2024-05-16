@@ -12,8 +12,19 @@ python3 synthesize.py -i ../few-shot-img-syn/data/cat -o output_cat_all --topk 1
 ```
 python3 synthesize.py -i ../few-shot-img-syn/data/cat -o output_cat_non_topk --topk 0.05 --reverse_topk
 ```
-
+We can see that in this context, where the color of the cat and its surrounding is similar, top K still retains some structural information.
 
 ![](data/cat/Abyssinian_32.jpg)
 
-<h4 align="center">The efficient frontier of the brute force approach including the 1/n portfolio, using the training data.</h4>
+<h4 align="center">Original Cat Image</h4>
+
+
+![](texture-synthesis-visualization/output_cat_all/seed_0_Abyssinian_32.jpg)
+
+<h4 align="center">TopK + Non TopK </h4>
+
+
+![](texture-synthesis-visualization/output_cat_non_topk/seed_0_Abyssinian_32.jpg)
+
+<h4 align="center">  Non TopK </h4>
+
