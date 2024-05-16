@@ -28,3 +28,20 @@ We can see that in this context, where the texture of the cat and its surroundin
 
 <h4 align="left">  Non TopK </h4>
 
+
+Also, we observe that when there is stark contrast in the texture and color between the subject and the surrounding, as expected the top K  retains some structural information where as non-top retains negligible structural information.
+
+![](data/cat/Abyssinian_33.jpg)
+
+<h4 align="left">Original Cat Image</h4>
+
+
+![](texture-synthesis-visualization/output_cat_all/seed_0_Abyssinian_33.jpg)
+
+<h4 align="left">TopK + Non TopK </h4>
+
+
+![](texture-synthesis-visualization/output_cat_non_topk/seed_0_Abyssinian_33.jpg)
+
+<h4 align="left">  Non TopK </h4>
+
