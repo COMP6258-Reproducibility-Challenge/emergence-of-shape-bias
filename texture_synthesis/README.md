@@ -12,3 +12,36 @@ python3 synthesize.py -i ../few-shot-img-syn/data/cat -o output_cat_all --topk 1
 ```
 python3 synthesize.py -i ../few-shot-img-syn/data/cat -o output_cat_non_topk --topk 0.05 --reverse_topk
 ```
+We can see that in this context, where the texture of the cat and its surrounding is similar, top K still retains some structural information where as non-top retains negligible structural information.
+
+![](data/cat/Abyssinian_47.jpg)
+
+<h4 align="left">Original Cat Image</h4>
+
+
+![](texture-synthesis-visualization/output_cat_all/seed_0_Abyssinian_47.jpg)
+
+<h4 align="left">TopK + Non TopK </h4>
+
+
+![](texture-synthesis-visualization/output_cat_non_topk/seed_0_Abyssinian_47.jpg)
+
+<h4 align="left">  Non TopK </h4>
+
+
+Also, we observe that when there is stark contrast in the texture and color between the subject and the surrounding, as expected the top K  retains some structural information where as non-top retains negligible structural information.
+
+![](data/cat/Abyssinian_33.jpg)
+
+<h4 align="left">Original Cat Image</h4>
+
+
+![](texture-synthesis-visualization/output_cat_all/seed_0_Abyssinian_33.jpg)
+
+<h4 align="left">TopK + Non TopK </h4>
+
+
+![](texture-synthesis-visualization/output_cat_non_topk/seed_0_Abyssinian_33.jpg)
+
+<h4 align="left">  Non TopK </h4>
+
